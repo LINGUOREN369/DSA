@@ -1,3 +1,5 @@
+import graphviz
+
 class Node:
     def __init__(self, data):
         self.data = data
@@ -22,7 +24,7 @@ class BinaryTree:
             else:
                 self._insert_recursive(current.left, new_node)
 
-        else:
+        if new_node.data > current.data:
             if current.right is None:
                 current.right = new_node
             else:
@@ -74,6 +76,25 @@ class BinaryTree:
             self._postorder_recursive(current.right, elements)
             elements.append(current.data)
 
+    def visualize(self):
+        if self.root is None:
+            return "Tree is empty"
+
+        dot = graphviz.Digraph()
+        self._add_nodes(dot, self.root)
+        return dot
+
+    def _add_nodes(self, dot, node):
+        if node:
+            dot.node(str(node.data))
+            if node.left:
+                dot.edge(str(node.data), str(node.left.data))
+                self._add_nodes(dot, node.left)
+            if node.right:
+                dot.edge(str(node.data), str(node.right.data))
+                self._add_nodes(dot, node.right)
+
+
 if __name__ == "__main__":
     bt = BinaryTree()
     bt.insert(10)
@@ -83,9 +104,16 @@ if __name__ == "__main__":
     bt.insert(7)
     bt.insert(13)
     bt.insert(18)
+    bt.insert(31)
+    bt.insert(35)
+    bt.insert(27)
+    bt.insert(1)
 
-    print("Inorder traversal:", bt.inorder_traversal())  # Output: [3, 5, 7, 10, 13, 15, 18]
-    print("Preorder traversal:", bt.preorder_traversal())  # Output: [10, 5, 3, 7, 15, 13, 18]
-    print("Postorder traversal:", bt.postorder_traversal())  # Output: [3, 7, 5, 13, 18, 15, 10]
+    print("Inorder traversal:", bt.inorder_traversal())  # Output: [3, 3, 5, 7, 7, 10, 13, 15, 15, 18, 30]
+    print("Preorder traversal:", bt.preorder_traversal())  # Output: [10, 5, 3, 3, 7, 7, 15, 13, 18, 15, 30]
+    print("Postorder traversal:", bt.postorder_traversal())  # Output: [3, 3, 7, 7, 5, 13, 15, 30, 18, 15, 10]
     print("Search 7:", bt.search(7))  # Output: True
     print("Search 8:", bt.search(8))  # Output: False
+
+    tree_visual = bt.visualize()
+    tree_visual.render(filename='/Users/linguoren/Documents/GitHub/DSA/binary_tree_with_duplicates', format='png', cleanup=True)  # Save the visualization as a PNG file
