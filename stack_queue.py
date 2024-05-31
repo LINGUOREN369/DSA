@@ -23,6 +23,36 @@ class Stack:
     def size(self):
         return len(self.items)
 
+class Queue:
+    def __init__(self):
+        self.items = []
+
+    def enqueue(self, item):
+        if not self.items.is_empty():
+            self.items.append(item)
+        else:
+            raise IndexError("Enter the right index")
+
+    def dequeue(self):
+        if not self.items.is_empty():
+            self.items.pop(0)
+        else:
+            raise IndexError("enter the right index") 
+        
+    def isempty(self):
+        return len(self.items) == 0
+
+    def peek(self):
+        if not self.isempty():
+            return self.items[0]
+        else:
+            raise IndexError("Enter the right index")
+        
+    def size(self):
+        return len(self.items)
+    
+
+
 if __name__ == "__main__":
     # Example usage
     stack = Stack()
@@ -35,3 +65,15 @@ if __name__ == "__main__":
     print(stack.is_empty())  # Output: False
     print(stack.pop())   # Output: 1
     print(stack.is_empty())  # Output: True
+
+
+    queue = Queue()
+    queue.enqueue(1)
+    queue.enqueue(2)
+    queue.enqueue(3)
+    print(queue.peek())  # Output: 1
+    print(queue.dequeue())  # Output: 1
+    print(queue.dequeue())  # Output: 2
+    print(queue.is_empty())  # Output: False
+    print(queue.dequeue())  # Output: 3
+    print(queue.is_empty())  # Output: True
